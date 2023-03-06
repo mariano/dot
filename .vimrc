@@ -8,6 +8,7 @@ Plug 'scrooloose/nerdtree'	 	" file system explorer
 Plug 'tpope/vim-surround'	 	" surroundings (parenthesis, brackets, quotes, ...)
 Plug 'nathanaelkane/vim-indent-guides'	" visual indent levels
 Plug 'editorconfig/editorconfig-vim'	" .editorconfig support
+Plug 'prabirshrestha/asyncomplete.vim'  " autocomplete
 
 call plug#end()
 
@@ -135,6 +136,9 @@ let g:syntastic_enable_signs=1
 let g:syntastic_c_check_header=1
 let g:syntastic_c_no_include_search = 1 " Disable the search of included header files after special libraries
 let g:syntastic_c_auto_refresh_includes=1
+
+let g:asyncomplete_auto_popup = 1
+let g:asyncomplete_auto_completeopt = 0
 
 " Shortcuts
 
