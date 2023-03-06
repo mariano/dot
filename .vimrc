@@ -9,6 +9,10 @@ Plug 'tpope/vim-surround'	 	" surroundings (parenthesis, brackets, quotes, ...)
 Plug 'nathanaelkane/vim-indent-guides'	" visual indent levels
 Plug 'editorconfig/editorconfig-vim'	" .editorconfig support
 Plug 'prabirshrestha/asyncomplete.vim'  " autocomplete
+Plug 'itchyny/lightline.vim'		" status bar
+Plug 'shinchu/lightline-gruvbox.vim'	" status bar theme
+Plug 'maximbaz/lightline-ale'		" status bar syntax checking
+Plug 'nickspoons/vim-sharpenup'		" mappings, code-actions available flag and statusline integration
 
 call plug#end()
 
@@ -73,7 +77,7 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_root_markers = ['.csproj']
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn|obj)$',
-  \ 'file': '\v\.(exe|so|dll)$'
+  \ 'file': '\v\.(exe|so|dll|swo|swp)$'
   \ }
 " ignore files in .gitignore
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
@@ -109,6 +113,10 @@ let g:OmniSharp_highlight_groups = {
 "
 let g:OmniSharp_server_path = '/Users/mariano/Code/bin/omnisharp'
 let g:OmniSharp_server_stdio = 1
+augroup OmniSharpIntegrations
+  autocmd!
+  autocmd User OmniSharpProjectUpdated,OmniSharpReady call lightline#update()
+augroup END
 
 let g:ale_sign_error = '•'
 let g:ale_sign_warning = '•'
@@ -139,6 +147,43 @@ let g:syntastic_c_auto_refresh_includes=1
 
 let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_auto_completeopt = 0
+
+let g:lightline = {
+\ 'colorscheme': 'gruvbox',
+\ 'active': {
+\   'right': [
+\     ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok'],
+\     ['lineinfo'], ['percent'],
+\     ['fileformat', 'fileencoding', 'filetype', 'sharpenup']
+\   ]
+\ },
+\ 'inactive': {
+\   'right': [['lineinfo'], ['percent'], ['sharpenup']]
+\ },
+\ 'component': {
+\   'sharpenup': sharpenup#statusline#Build()
+\ },
+\ 'component_expand': {
+\   'linter_checking': 'lightline#ale#checking',
+\   'linter_infos': 'lightline#ale#infos',
+\   'linter_warnings': 'lightline#ale#warnings',
+\   'linter_errors': 'lightline#ale#errors',
+\   'linter_ok': 'lightline#ale#ok'
+  \  },
+  \ 'component_type': {
+  \   'linter_checking': 'right',
+  \   'linter_infos': 'right',
+  \   'linter_warnings': 'warning',
+  \   'linter_errors': 'error',
+  \   'linter_ok': 'right'
+\  }
+\}
+" Use unicode chars for ale indicators in the statusline
+let g:lightline#ale#indicator_checking = "\uf110 "
+let g:lightline#ale#indicator_infos = "\uf129 "
+let g:lightline#ale#indicator_warnings = "\uf071 "
+let g:lightline#ale#indicator_errors = "\uf05e "
+let g:lightline#ale#indicator_ok = "\uf00c "
 
 " Shortcuts
 
