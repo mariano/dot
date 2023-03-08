@@ -23,5 +23,5 @@ in [iterm2.itermkeymap](iterm2.itermkeymap) for better navigation:
 If it's your first time using the [.vimrc](.vimrc) file make sure to run `PlugInstall`
 on your vim command line.
 
-![image](https://user-images.githubusercontent.com/18598/223744354-47c4b730-a236-4152-be34-cbace00616c2.png)
+![image](https://user-images.githubusercontent.com/18598/223745905-5829cd6f-20bb-4079-a81b-9e440720a058.png)
 *VIM showing omnisharp's peek definition (F5) on a vim tab (one of many), while also showing the cheatsheet (F1)*
