@@ -207,14 +207,15 @@ function CheatsheetFilter(id, key)
     return v:false
 endfunction
 
-function VimCheatsheet()
+function Cheatsheet()
     call popup_create([
     \    "  VIM :       H: top           ·      M: middle        ·      L: bottom",
-    \    "              B: full word ←   ·      W: full word →   ·      b: word ←    ·      w: word →",
-    \    "              0: start         ·      ^: first         ·      $: end       ·     gg: fof        · G: eof",
+    \    "              B: full word ←   ·      W: full word →   ·      b: word ←     ·      w: word →",
+    \    "              0: start         ·      ^: first         ·      $: end        ·     gg: fof        · G: eof",
     \    "            C-u: page up       ·    C-d: page down     .    C-p: open file",
     \    "",
-    \    " tmux :   ⌥ ⌘ ↑: up            ·  ⌥ ⌘ ↓: down          ·  ⌥ ⌘ ←: left      ·  ⌥ ⌘ →: right",
+    \    " tmux :   ⌥ ⌘ ↑: up            ·  ⌥ ⌘ ↓: down          ·  ⌥ ⌘ ←: left       ·  ⌥ ⌘ →: right",
+    \    "          S ⌘ ↑: size up       ·  S ⌘ ↓: size down     ·  S ⌘ ←: size left  ·  S ⌘ →: size right",
     \    "",
     \    " .NET :      F5: peek def      ·     F6: goto def      ·     F7: find impl",
     \ ], #{
@@ -230,7 +231,7 @@ function VimCheatsheet()
 endfunction
 
 " buffer navigation
-nnoremap <silent> <F1> :call VimCheatsheet()<CR>
+nnoremap <silent> <F1> :call Cheatsheet()<CR>
 nnoremap <F3> :buffers<CR>:buffer<Space>
 nnoremap <expr> <F2> empty(filter(getwininfo(), 'v:val.quickfix')) ? ':copen<CR>' : ':cclose<CR>'
 
