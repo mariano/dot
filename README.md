@@ -23,5 +23,5 @@ in [iterm2.itermkeymap](iterm2.itermkeymap) for better navigation:
 If it's your first time using the [.vimrc](.vimrc) file make sure to run `PlugInstall`
 on your vim command line.
 
-![image](https://user-images.githubusercontent.com/18598/223788324-73b49cc5-0801-4c19-9437-90a291609a98.png)
-*VIM showing omnisharp's peek definition (F5) on a vim tab (one of many), while also showing the file explorer (nerd tree) and the cheatsheet (F1)*
+![image](https://user-images.githubusercontent.com/18598/223804169-de1f44cf-b706-4461-8f1e-1f477c051fc3.png)
+*tmux and vim, with vim showing omnisharp's peek definition (F5) on a vim tab (one of many), while also showing the file explorer (nerdtree) and the cheatsheet (F1)*
