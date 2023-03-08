@@ -24,6 +24,7 @@ scriptencoding utf-8
 set encoding=utf-8
 set completeopt=menuone,noinsert,noselect,popuphidden
 set completepopup=highlight:Pmenu,border:on
+set wildoptions=pum
 set backspace=indent,eol,start
 set expandtab
 set shiftround
@@ -99,10 +100,8 @@ else
   \}
 endif
 let g:OmniSharp_popup_mappings = {
-\ 'sigNext': '<C-n>',
-\ 'sigPrev': '<C-p>',
-\ 'pageDown': ['<C-f>', '<PageDown>'],
-\ 'pageUp': ['<C-b>', '<PageUp>']
+\ 'pageDown': ['<C-d>', '<PageDown>'],
+\ 'pageUp': ['<C-u>', '<PageUp>']
 \}
 let g:OmniSharp_highlight_groups = {
 \ 'ExcludedCode': 'NonText'
@@ -124,15 +123,6 @@ let g:ale_sign_info = '·'
 let g:ale_sign_style_error = '·'
 let g:ale_sign_style_warning = '·'
 let g:ale_linters = { 'cs': ['OmniSharp'] }
-
-" Start NERDTree when Vim starts with a directory argument.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
-    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
-" Exit Vim if NERDTree is the only window remaining in the only tab.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-" Open the existing NERDTree on each new tab.
-autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_exclude_filetypes = ['nerdtree']
@@ -187,7 +177,7 @@ let g:lightline#ale#indicator_ok = "\uf00c "
 
 " Shortcuts
 
-let mapleader = "\<Space>"
+let mapleader = "\<tab>"
 
 " "sudo" save:
 :cmap w!! w !sudo tee % >/dev/null
@@ -209,17 +199,82 @@ imap <silent> <leader>s <Esc>:w<CR>
 " Remove search highlight
 nnoremap <leader><space> :noh<cr>
 
+function CheatsheetFilter(id, key)
+    if a:key == "q"
+        call popup_close(a:id)
+        return v:true
+    endif
+    return v:false
+endfunction
+
+function VimCheatsheet()
+    call popup_create([
+    \    "  VIM :       H: top           ·      M: middle        ·      L: bottom",
+    \    "              B: full word ←   ·      W: full word →   ·      b: word ←    ·      w: word →",
+    \    "              0: start         ·      ^: first         ·      $: end       ·     gg: fof        · G: eof",
+    \    "            C-u: page up       ·    C-d: page down     .    C-p: open file",
+    \    "",
+    \    " tmux :   ⌥ ⌘ ↑: up            ·  ⌥ ⌘ ↓: down          ·  ⌥ ⌘ ←: left      ·  ⌥ ⌘ →: right",
+    \    "",
+    \    " .NET :      F5: peek def      ·     F6: goto def      ·     F7: find impl",
+    \ ], #{
+    \    title: ' VIM cheatsheet ',
+    \    pos: 'center', 
+    \    padding: [],
+    \    close: 'click',
+    \    line: 1,
+    \    border: [],
+    \    zindex: 300,
+    \    filter: 'CheatsheetFilter'
+    \ })
+endfunction
+
 " buffer navigation
-nnoremap <F2> :buffers<CR>:buffer<Space>
+nnoremap <silent> <F1> :call VimCheatsheet()<CR>
+nnoremap <F3> :buffers<CR>:buffer<Space>
+nnoremap <expr> <F2> empty(filter(getwininfo(), 'v:val.quickfix')) ? ':copen<CR>' : ':cclose<CR>'
 
 " Nerdtree shortcuts
-nnoremap <leader>r :NERDTreeToggle<CR>
+nnoremap <leader>w :NERDTreeToggle<CR>
 nnoremap <leader>e :NERDTreeFind<CR>
-"
 
 " OmniSharp shortcuts
+map <silent> <F5> :OmniSharpPreviewDefinition<CR>
+imap <silent> <F5> <Esc>:OmniSharpPreviewDefinition<CR>
 nmap <silent> <leader>d :OmniSharpGotoDefinition<CR>
 imap <silent> <leader>d <Esc>:OmniSharpGotoDefinition<CR>i
+nmap <silent> <F6> :OmniSharpGotoDefinition<CR>
+imap <silent> <F6> <Esc>:OmniSharpGotoDefinition<CR>
 nmap <silent> <leader>i :OmniSharpFindImplementations<CR>
 imap <silent> <leader>i <Esc>:OmniSharpFindImplementations<CR>i
+nmap <silent> <F7> :OmniSharpFindImplementations<CR>
+imap <silent> <F7> <Esc>:OmniSharpFindImplementations<CR>
+nmap <silent> <leader>r :OmniSharpFindUsages<CR>
+imap <silent> <leader>r <Esc>:OmniSharpFindUsages<CR>i
+
+" navigation
+nmap <C-b> b
+imap <C-b> <Esc>b
+vmap <C-b> b
+nmap <C-f> w
+imap <C-f> <Esc>w
+vmap <C-f> w
+
+" shift+arrow selection
+nmap <S-Up> v<Up>
+nmap <S-Down> v<Down>
+nmap <S-Left> v<Left>
+nmap <S-Right> v<Right>
+vmap <S-Up> <Up>
+vmap <S-Down> <Down>
+vmap <S-Left> <Left>
+vmap <S-Right> <Right>
+imap <S-Up> <Esc>v<Up>
+imap <S-Down> <Esc>v<Down>
+imap <S-Left> <Esc>v<Left>
+imap <S-Right> <Esc>v<Right>
+
+" clipboard support
+vnoremap <C-c> :w !pbcopy<CR><CR>
+noremap <C-v> :r !pbpaste<CR><CR>
 

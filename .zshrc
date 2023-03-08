@@ -17,3 +17,4 @@ export EDITOR='vim'
 export PATH="/Users/mariano/Code/tactic/bin:/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH";
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
