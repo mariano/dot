@@ -175,30 +175,6 @@ let g:lightline#ale#indicator_warnings = "\uf071 "
 let g:lightline#ale#indicator_errors = "\uf05e "
 let g:lightline#ale#indicator_ok = "\uf00c "
 
-" Shortcuts
-
-let mapleader = "\<tab>"
-
-" "sudo" save:
-:cmap w!! w !sudo tee % >/dev/null
-
-" tab navigation
-nmap <silent> <leader><Left> :tabprevious<CR>
-imap <silent> <leader><Left> <Esc>:tabprevious<CR>i
-map <silent> <leader><Left> :tabprevious<CR>
-nmap <silent> <leader><Right> :tabnext<CR>
-imap <silent> <leader><Right> <Esc>:tabnext<CR>i
-map <silent> <leader><Right> :tabnext<CR>
-nmap <silent> <leader>t :tabnew<CR>
-imap <silent> <leader>t <Esc>:tabnew<CR>
-map <silent> <leader>t <Esc>:tabnew<CR>
-map <silent> <leader>x :q<CR>
-nmap <silent> <leader>s :w<CR>
-imap <silent> <leader>s <Esc>:w<CR>
-
-" Remove search highlight
-nnoremap <leader><space> :noh<cr>
-
 function CheatsheetFilter(id, key)
     if a:key == "q"
         call popup_close(a:id)
@@ -209,15 +185,17 @@ endfunction
 
 function Cheatsheet()
     call popup_create([
-    \    "  VIM :       H: top           ·      M: middle        ·      L: bottom",
-    \    "              B: full word ←   ·      W: full word →   ·      b: word ←     ·      w: word →",
-    \    "              0: start         ·      ^: first         ·      $: end        ·     gg: fof        · G: eof",
-    \    "            C-u: page up       ·    C-d: page down     .    C-p: open file",
+    \    "  VIM :     C-o: open         ·    ⇥ e: tree toggle  ·  ⇥ f: open tree    .      t: open tab", 
+    \    "            ⇥ t: new tab      ·    ⇥ ←: left tab     .  ⇥ →: right tab    .    ⇥ s: save       . ⇥ w: close", 
+    \    "            C-u: page up      .    C-d: page down    ·    H: top          ·      M: middle     ·   L: bottom",
+    \    "              B: full word ←  ·      W: full word →  ·    b: word ←       ·      w: word →",
+    \    "              0: start        ·      ^: first        ·    $: end          ·     gg: fof        ·   G: eof",
+    \    "             F2: quickfix     ·     F3: buffers",
     \    "",
-    \    " tmux :   ⌥ ⌘ ↑: up            ·  ⌥ ⌘ ↓: down          ·  ⌥ ⌘ ←: left       ·  ⌥ ⌘ →: right",
-    \    "          S ⌘ ↑: size up       ·  S ⌘ ↓: size down     ·  S ⌘ ←: size left  ·  S ⌘ →: size right",
+    \    " .NET :      F5: peek def     ·     F6: goto def     ·     F7: find impl",
     \    "",
-    \    " .NET :      F5: peek def      ·     F6: goto def      ·     F7: find impl",
+    \    " tmux :   ⌥ ⌘ ↑: up           ·  ⌥ ⌘ ↓: down         ·  ⌥ ⌘ ←: left       ·  ⌥ ⌘ →: right",
+    \    "          S ⌘ ↑: size up      ·  S ⌘ ↓: size down    ·  S ⌘ ←: size left  ·  S ⌘ →: size right",
     \ ], #{
     \    title: ' VIM cheatsheet ',
     \    pos: 'center', 
@@ -230,14 +208,41 @@ function Cheatsheet()
     \ })
 endfunction
 
+" Shortcuts
+
+let mapleader = "\<tab>"
+
+" "sudo" save:
+cmap w!! w !sudo tee % >/dev/null
+
+" tab navigation
+nmap <silent> <leader><Left> :tabprevious<CR>
+imap <silent> <leader><Left> <Esc>:tabprevious<CR>i
+map <silent> <leader><Left> :tabprevious<CR>
+nmap <silent> <leader><Right> :tabnext<CR>
+imap <silent> <leader><Right> <Esc>:tabnext<CR>i
+map <silent> <leader><Right> :tabnext<CR>
+nmap <silent> <leader>t :tabnew<CR>
+imap <silent> <leader>t <Esc>:tabnew<CR>
+map <silent> <leader>t <Esc>:tabnew<CR>
+nmap <silent> <leader>w :q<CR>
+imap <silent> <leader>w <Esc>:q<CR>
+map <silent> <leader>w :q<CR>
+nmap <silent> <leader>s :w<CR>
+imap <silent> <leader>s <Esc>:w<CR>
+map <silent> <leader>s :w<CR>
+
+" Remove search highlight
+nnoremap <leader><space> :noh<cr>
+
 " buffer navigation
 nnoremap <silent> <F1> :call Cheatsheet()<CR>
 nnoremap <F3> :buffers<CR>:buffer<Space>
 nnoremap <expr> <F2> empty(filter(getwininfo(), 'v:val.quickfix')) ? ':copen<CR>' : ':cclose<CR>'
 
 " Nerdtree shortcuts
-nnoremap <leader>w :NERDTreeToggle<CR>
-nnoremap <leader>e :NERDTreeFind<CR>
+nnoremap <leader>e :NERDTreeToggle<CR>
+nnoremap <leader>f :NERDTreeFind<CR>
 
 " OmniSharp shortcuts
 map <silent> <F5> :OmniSharpPreviewDefinition<CR>
