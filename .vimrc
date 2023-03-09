@@ -106,6 +106,7 @@ let g:OmniSharp_popup_mappings = {
 let g:OmniSharp_highlight_groups = {
 \ 'ExcludedCode': 'NonText'
 \}
+let g:OmniSharp_selector_ui = 'ctrlp'
 " Passthrough server to vscode's omnisharp. Example pass-through:
 " 
 " /opt/homebrew/Cellar/dotnet@6/6.0.114/libexec/dotnet ~/.vscode/extensions/ms-dotnettools.csharp-1.25.4-darwin-arm64/.omnisharp/1.39.4-net6.0/OmniSharp.dll "$@"
@@ -185,17 +186,18 @@ endfunction
 
 function Cheatsheet()
     call popup_create([
-    \    "  VIM :     C-o: open         ·    ⇥ e: tree toggle  ·  ⇥ f: open tree    .      t: open tab", 
-    \    "            ⇥ t: new tab      ·    ⇥ ←: left tab     .  ⇥ →: right tab    .    ⇥ s: save       . ⇥ w: close", 
-    \    "            C-u: page up      .    C-d: page down    ·    H: top          ·      M: middle     ·   L: bottom",
-    \    "              B: full word ←  ·      W: full word →  ·    b: word ←       ·      w: word →",
-    \    "              0: start        ·      ^: first        ·    $: end          ·     gg: fof        ·   G: eof",
-    \    "             F2: quickfix     ·     F3: buffers",
+    \    "  vim :     ⇥ o: open         ·   ⇥ e: tree toggle  · ⇥ f: open tree", 
+    \    "            ⇥ t: new tab      ·   ⇥ ←: left tab     . ⇥ →: right tab    .   ⇥ s: save       . ⇥ w: close", 
+    \    "            C-u: page up      .   C-d: page down    ·   H: top          ·     M: middle     ·   L: bottom",
+    \    "              B: full word ←  ·     W: full word →  ·   b: word ←       ·     w: word →",
+    \    "              0: start        ·     ^: first        ·   $: end          ·    gg: fof        ·   G: eof",
+    \    "            F10: quickfix     ·   F11: buffers      · F12: clean search",
     \    "",
-    \    " .NET :      F5: peek def     ·     F6: goto def     ·     F7: find impl",
+    \    " .net :      F2: rename       ·    F3: peek def     ·  F4: goto def     ·    F5: impl       ·  F6: usages",
+    \    "             F7: code issues",
     \    "",
-    \    " tmux :   ⌥ ⌘ ↑: up           ·  ⌥ ⌘ ↓: down         ·  ⌥ ⌘ ←: left       ·  ⌥ ⌘ →: right",
-    \    "          S ⌘ ↑: size up      ·  S ⌘ ↓: size down    ·  S ⌘ ←: size left  ·  S ⌘ →: size right",
+    \    " tmux :   ⌥ ⌘ ↑: up           · ⌥ ⌘ ↓: down         · ⌥ ⌘ ←: left       · ⌥ ⌘ →: right",
+    \    "          S ⌘ ↑: size up      · S ⌘ ↓: size down    · S ⌘ ←: size left  · S ⌘ →: size right",
     \ ], #{
     \    title: ' VIM cheatsheet ',
     \    pos: 'center', 
@@ -231,32 +233,34 @@ map <silent> <leader>w :q<CR>
 nmap <silent> <leader>s :w<CR>
 imap <silent> <leader>s <Esc>:w<CR>
 map <silent> <leader>s :w<CR>
+nmap <silent> <leader>o :CtrlP<CR>
+imap <silent> <leader>o <Esc>:CtrlP<CR>
+map <silent> <leader>o :CtrlP<CR>
 
-" Remove search highlight
-nnoremap <leader><space> :noh<cr>
 
-" buffer navigation
+" More navigation
 nnoremap <silent> <F1> :call Cheatsheet()<CR>
-nnoremap <F3> :buffers<CR>:buffer<Space>
-nnoremap <expr> <F2> empty(filter(getwininfo(), 'v:val.quickfix')) ? ':copen<CR>' : ':cclose<CR>'
+nnoremap <silent> <expr> <F10> empty(filter(getwininfo(), 'v:val.quickfix')) ? ':copen<CR>' : ':cclose<CR>'
+nnoremap <silent> <F11> :buffers<CR>:buffer<Space>
+nnoremap <silent> <F12> :noh<cr>
 
 " Nerdtree shortcuts
 nnoremap <leader>e :NERDTreeToggle<CR>
 nnoremap <leader>f :NERDTreeFind<CR>
 
 " OmniSharp shortcuts
-map <silent> <F5> :OmniSharpPreviewDefinition<CR>
-imap <silent> <F5> <Esc>:OmniSharpPreviewDefinition<CR>
-nmap <silent> <leader>d :OmniSharpGotoDefinition<CR>
-imap <silent> <leader>d <Esc>:OmniSharpGotoDefinition<CR>i
-nmap <silent> <F6> :OmniSharpGotoDefinition<CR>
-imap <silent> <F6> <Esc>:OmniSharpGotoDefinition<CR>
-nmap <silent> <leader>i :OmniSharpFindImplementations<CR>
-imap <silent> <leader>i <Esc>:OmniSharpFindImplementations<CR>i
-nmap <silent> <F7> :OmniSharpFindImplementations<CR>
-imap <silent> <F7> <Esc>:OmniSharpFindImplementations<CR>
-nmap <silent> <leader>r :OmniSharpFindUsages<CR>
-imap <silent> <leader>r <Esc>:OmniSharpFindUsages<CR>i
+nmap <silent> <F2> :OmniSharpRename<CR>
+imap <silent> <F2> <Esc>:OmniSharpRename<CR>
+nmap <silent> <F3> :OmniSharpPreviewDefinition<CR>
+imap <silent> <F3> <Esc>:OmniSharpPreviewDefinition<CR>
+nmap <silent> <F4> :OmniSharpGotoDefinition tabedit<CR>
+imap <silent> <F4> <Esc>:OmniSharpGotoDefinition tabedit<CR>
+nmap <silent> <F5> :OmniSharpFindImplementations<CR>
+imap <silent> <F5> <Esc>:OmniSharpFindImplementations<CR>
+nmap <silent> <F6> :OmniSharpFindUsages<CR>
+imap <silent> <F6> <Esc>:OmniSharpFindUsages<CR>
+nmap <silent> <F7> :OmniSharpGlobalCodeCheck<CR>
+imap <silent> <F7> <Esc>:OmniSharpGlobalCodeCheck<CR>
 
 " navigation
 nmap <C-b> b
