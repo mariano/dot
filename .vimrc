@@ -31,13 +31,13 @@ endfunction
 function Cheatsheet()
     call popup_create([
     \    "  vim :     ⇥ o: open         ·   ⇥ e: tree toggle  · ⇥ f: open tree    .   ⇥ x: exit", 
-    \    "            ⇥ t: new tab      ·   C-[: left tab     . C-]: right tab    .   ⇥ s: save       . ⇥ w: close", 
-    \    "            C-u: page up      .   C-d: page down    ·   H: top          ·     M: middle     ·   L: bottom",
+    \    "            ⇥ t: new tab      ·   ⇥ ←: left tab     . ⇥ →:: right tab   .   ⇥ s: save         . ⇥ w: close", 
+    \    "            C-u: page up      .   C-d: page down    ·   H: top          ·     M: middle       ·   L: bottom",
     \    "              B: full word ←  ·     W: full word →  ·   b: word ←       ·     w: word →",
-    \    "              0: start        ·     ^: first        ·   $: end          ·    gg: fof        ·   G: eof",
-    \    "             F8: quickfix     ·    F9: locations    ·   F10: buffers      · F12: clean search",
+    \    "              0: start        ·     ^: first        ·   $: end          ·    gg: fof          ·   G: eof",
+    \    "             F8: quickfix     ·    F9: locations    ·   F10: buffers    ·   F12: clean search",
     \    "",
-    \    " .net :      F2: rename       ·    F3: peek def     ·  F4: goto def     ·    F5: impl       ·  F6: usages",
+    \    " .net :      F2: rename       ·    F3: peek def     ·  F4: goto def     ·    F5: impl         ·  F6: usages",
     \    "             F7: code issues",
     \    "",
     \    " tmux :   ⌥ ⌘ ↑: up           · ⌥ ⌘ ↓: down         · ⌥ ⌘ ←: left       · ⌥ ⌘ →: right",
