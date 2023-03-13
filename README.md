@@ -1,9 +1,18 @@
 Developer friendly configuration files. Assumes [oh my zsh](https://ohmyz.sh/) is installed.
 
+## iterm2
+
+Import the keymaps found in [iterm2.itermkeymap](iterm2.itermkeymap) for better navigation.
+
+Also make sure [shell integration is enabled](https://iterm2.com/documentation-shell-integration.html) with:
+
+```bash
+curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
+```
+
 ## tmux
 
-Use the [.tmux.conf](.tmux.conf) configuration file. If using iterm2, Import the keymaps found 
-in [iterm2.itermkeymap](iterm2.itermkeymap) for better navigation:
+Use the [.tmux.conf](.tmux.conf) configuration file. Main shortcuts:
 
 * ⌥ ⌘ ↑: move up
 * ⌥ ⌘ ↓: move down
