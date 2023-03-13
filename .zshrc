@@ -14,7 +14,6 @@ source $ZSH/oh-my-zsh.sh
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 export EDITOR='vim'
-export PATH="/Users/mariano/Code/tactic/bin:/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH";
 
+[ -f ~/.env.zsh ] && source ~/.env.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-

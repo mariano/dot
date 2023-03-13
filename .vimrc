@@ -13,8 +13,46 @@ Plug 'itchyny/lightline.vim'		" status bar
 Plug 'shinchu/lightline-gruvbox.vim'	" status bar theme
 Plug 'maximbaz/lightline-ale'		" status bar syntax checking
 Plug 'nickspoons/vim-sharpenup'		" mappings, code-actions available flag and statusline integration
+Plug 'tpope/vim-obsession'		" sessions
+Plug 'romainl/vim-qf'			" quickfix fixes
 
 call plug#end()
+
+" Functions
+
+function CheatsheetFilter(id, key)
+    if a:key == "q"
+        call popup_close(a:id)
+        return v:true
+    endif
+    return v:false
+endfunction
+
+function Cheatsheet()
+    call popup_create([
+    \    "  vim :     ⇥ o: open         ·   ⇥ e: tree toggle  · ⇥ f: open tree    .   ⇥ x: exit", 
+    \    "            ⇥ t: new tab      ·   C-[: left tab     . C-]: right tab    .   ⇥ s: save       . ⇥ w: close", 
+    \    "            C-u: page up      .   C-d: page down    ·   H: top          ·     M: middle     ·   L: bottom",
+    \    "              B: full word ←  ·     W: full word →  ·   b: word ←       ·     w: word →",
+    \    "              0: start        ·     ^: first        ·   $: end          ·    gg: fof        ·   G: eof",
+    \    "             F8: quickfix     ·    F9: locations    ·   F10: buffers      · F12: clean search",
+    \    "",
+    \    " .net :      F2: rename       ·    F3: peek def     ·  F4: goto def     ·    F5: impl       ·  F6: usages",
+    \    "             F7: code issues",
+    \    "",
+    \    " tmux :   ⌥ ⌘ ↑: up           · ⌥ ⌘ ↓: down         · ⌥ ⌘ ←: left       · ⌥ ⌘ →: right",
+    \    "          S ⌘ ↑: size up      · S ⌘ ↓: size down    · S ⌘ ←: size left  · S ⌘ →: size right",
+    \ ], #{
+    \    title: ' Cheatsheet (q to close)',
+    \    pos: 'center', 
+    \    padding: [],
+    \    close: 'click',
+    \    line: 1,
+    \    border: [],
+    \    zindex: 300,
+    \    filter: 'CheatsheetFilter'
+    \ })
+endfunction
 
 " General settings
 filetype indent plugin on
@@ -130,9 +168,9 @@ let g:indent_guides_exclude_filetypes = ['nerdtree']
 
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
-let g:syntastic_auto_loc_list=1 " Auto-open error window if errors are detected
-let g:syntastic_enable_signs=1
-let g:syntastic_c_check_header=1
+let g:syntastic_auto_loc_list = 1 " Auto-open error window if errors are detected
+let g:syntastic_enable_signs = 1
+let g:syntastic_c_check_header = 1
 let g:syntastic_c_no_include_search = 1 " Disable the search of included header files after special libraries
 let g:syntastic_c_auto_refresh_includes=1
 
@@ -176,40 +214,6 @@ let g:lightline#ale#indicator_warnings = "\uf071 "
 let g:lightline#ale#indicator_errors = "\uf05e "
 let g:lightline#ale#indicator_ok = "\uf00c "
 
-function CheatsheetFilter(id, key)
-    if a:key == "q"
-        call popup_close(a:id)
-        return v:true
-    endif
-    return v:false
-endfunction
-
-function Cheatsheet()
-    call popup_create([
-    \    "  vim :     ⇥ o: open         ·   ⇥ e: tree toggle  · ⇥ f: open tree", 
-    \    "            ⇥ t: new tab      ·   ⇥ ←: left tab     . ⇥ →: right tab    .   ⇥ s: save       . ⇥ w: close", 
-    \    "            C-u: page up      .   C-d: page down    ·   H: top          ·     M: middle     ·   L: bottom",
-    \    "              B: full word ←  ·     W: full word →  ·   b: word ←       ·     w: word →",
-    \    "              0: start        ·     ^: first        ·   $: end          ·    gg: fof        ·   G: eof",
-    \    "            F10: quickfix     ·   F11: buffers      · F12: clean search",
-    \    "",
-    \    " .net :      F2: rename       ·    F3: peek def     ·  F4: goto def     ·    F5: impl       ·  F6: usages",
-    \    "             F7: code issues",
-    \    "",
-    \    " tmux :   ⌥ ⌘ ↑: up           · ⌥ ⌘ ↓: down         · ⌥ ⌘ ←: left       · ⌥ ⌘ →: right",
-    \    "          S ⌘ ↑: size up      · S ⌘ ↓: size down    · S ⌘ ←: size left  · S ⌘ →: size right",
-    \ ], #{
-    \    title: ' VIM cheatsheet ',
-    \    pos: 'center', 
-    \    padding: [],
-    \    close: 'click',
-    \    line: 1,
-    \    border: [],
-    \    zindex: 300,
-    \    filter: 'CheatsheetFilter'
-    \ })
-endfunction
-
 " Shortcuts
 
 let mapleader = "\<tab>"
@@ -236,17 +240,20 @@ map <silent> <leader>s :w<CR>
 nmap <silent> <leader>o :CtrlP<CR>
 imap <silent> <leader>o <Esc>:CtrlP<CR>
 map <silent> <leader>o :CtrlP<CR>
-
+nmap <silent> <leader>x :qa<CR>
+imap <silent> <leader>x <Esc>:qa<CR>
+map <silent> <leader>x :qa<CR>
 
 " More navigation
 nnoremap <silent> <F1> :call Cheatsheet()<CR>
-nnoremap <silent> <expr> <F10> empty(filter(getwininfo(), 'v:val.quickfix')) ? ':copen<CR>' : ':cclose<CR>'
-nnoremap <silent> <F11> :buffers<CR>:buffer<Space>
+nnoremap <silent> <F8> :call qf#toggle#ToggleQfWindow(0)<CR>
+nnoremap <silent> <F9> :call qf#toggle#ToggleLocWindow(0)<CR>
+nnoremap <silent> <F10> :buffers<CR>:buffer<Space>
 nnoremap <silent> <F12> :noh<cr>
 
 " Nerdtree shortcuts
-nnoremap <leader>e :NERDTreeToggle<CR>
-nnoremap <leader>f :NERDTreeFind<CR>
+nnoremap <silent> <leader>e :NERDTreeToggle<CR>
+nnoremap <silent> <leader>f :NERDTreeFind<CR>
 
 " OmniSharp shortcuts
 nmap <silent> <F2> :OmniSharpRename<CR>
@@ -263,28 +270,36 @@ nmap <silent> <F7> :OmniSharpGlobalCodeCheck<CR>
 imap <silent> <F7> <Esc>:OmniSharpGlobalCodeCheck<CR>
 
 " navigation
-nmap <C-b> b
-imap <C-b> <Esc>b
-vmap <C-b> b
-nmap <C-f> w
-imap <C-f> <Esc>w
-vmap <C-f> w
+nmap <silent> <C-b> b
+imap <silent> <C-b> <Esc>b
+vmap <silent> <C-b> b
+nmap <silent> <C-f> w
+imap <silent> <C-f> <Esc>w
+vmap <silent> <C-f> w
 
 " shift+arrow selection
-nmap <S-Up> v<Up>
-nmap <S-Down> v<Down>
-nmap <S-Left> v<Left>
-nmap <S-Right> v<Right>
-vmap <S-Up> <Up>
-vmap <S-Down> <Down>
-vmap <S-Left> <Left>
-vmap <S-Right> <Right>
-imap <S-Up> <Esc>v<Up>
-imap <S-Down> <Esc>v<Down>
-imap <S-Left> <Esc>v<Left>
-imap <S-Right> <Esc>v<Right>
+nmap <silent> <S-Up> v<Up>
+nmap <silent> <S-Down> v<Down>
+nmap <silent> <S-Left> v<Left>
+nmap <silent> <S-Right> v<Right>
+vmap <silent> <S-Up> <Up>
+vmap <silent> <S-Down> <Down>
+vmap <silent> <S-Left> <Left>
+vmap <silent> <S-Right> <Right>
+imap <silent> <S-Up> <Esc>v<Up>
+imap <silent> <S-Down> <Esc>v<Down>
+imap <silent> <S-Left> <Esc>v<Left>
+imap <silent> <S-Right> <Esc>v<Right>
 
 " clipboard support
-vnoremap <C-c> :w !pbcopy<CR><CR>
-noremap <C-v> :r !pbpaste<CR><CR>
+vnoremap <silent> <C-c> :w !pbcopy<CR><CR>
+noremap <silent> <C-v> :r !pbpaste<CR><CR>
+
+" quickfix and location windows
+let g:qf_auto_open_quickfix = 1
+let g:qf_auto_open_loclist = 1
+let g:qf_auto_resize = 1
+let g:qf_auto_quit = 1
+let g:qf_save_win_view = 1
+let g:qf_shorten_path = 3
 
