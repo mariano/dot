@@ -10,6 +10,12 @@ Also make sure [shell integration is enabled](https://iterm2.com/documentation-s
 curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
 ```
 
+Make sure you have a nerd font installed:
+
+```bash
+brew tap homebrew/cask-fonts && brew install --cask font-space-mono-nerd-font
+```
+
 ## tmux
 
 Use the [.tmux.conf](.tmux.conf) configuration file. Main shortcuts:

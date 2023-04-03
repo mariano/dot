@@ -2,9 +2,11 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'gruvbox-community/gruvbox' 	" Colorscheme
 Plug 'ctrlpvim/ctrlp.vim'        	" Fuzzy filename search
+Plug 'DavidEGx/ctrlp-smarttabs'		" Add tabs to ctrl-p
 Plug 'OmniSharp/omnisharp-vim'   	" c# static analysis
 Plug 'dense-analysis/ale'		" syntax checking and semantic errors
 Plug 'scrooloose/nerdtree'	 	" file system explorer
+Plug 'ryanoasis/vim-devicons'		" file icons in nerdtree
 Plug 'tpope/vim-surround'	 	" surroundings (parenthesis, brackets, quotes, ...)
 Plug 'nathanaelkane/vim-indent-guides'	" visual indent levels
 Plug 'editorconfig/editorconfig-vim'	" .editorconfig support
@@ -30,18 +32,19 @@ endfunction
 
 function Cheatsheet()
     call popup_create([
-    \    "  vim :     ⇥ o: open         ·   ⇥ e: tree toggle  · ⇥ f: open tree    .   ⇥ x: exit", 
-    \    "            ⇥ t: new tab      ·   ⇥ ←: left tab     . ⇥ →:: right tab   .   ⇥ s: save         . ⇥ w: close", 
-    \    "            C-u: page up      .   C-d: page down    ·   H: top          ·     M: middle       ·   L: bottom",
-    \    "              B: full word ←  ·     W: full word →  ·   b: word ←       ·     w: word →",
-    \    "              0: start        ·     ^: first        ·   $: end          ·    gg: fof          ·   G: eof",
-    \    "             F8: quickfix     ·    F9: locations    ·   F10: buffers    ·   F12: clean search",
+    \    " buffer:     ⇥ o: open         ·   ⇥ p: open tab     . ⇥ e: tree toggle  ·   ⇥ f: open tree    . ⇥ x: exit", 
+    \    "             ⇥ t: new tab      ·   ⇥ ←: left tab     . ⇥ →: right tab    .   ⇥ s: save         . ⇥ w: close",
     \    "",
-    \    " .net :      F2: rename       ·    F3: peek def     ·  F4: goto def     ·    F5: impl         ·  F6: usages",
-    \    "             F7: code issues",
+    \    " navigate:   C-u: page up      .   C-d: page down    ·   H: top          ·     M: middle       ·   L: bottom",
+    \    "               B: full word ←  ·     W: full word →  ·   b: word ←       ·     w: word →",
+    \    "               0: start        ·     ^: first        ·   $: end          ·    gg: fof          ·   G: eof",
+    \    "              F8: quickfix     ·    F9: locations    ·   F10: buffers    ·   F12: clean search",
     \    "",
-    \    " tmux :   ⌥ ⌘ ↑: up           · ⌥ ⌘ ↓: down         · ⌥ ⌘ ←: left       · ⌥ ⌘ →: right",
-    \    "          S ⌘ ↑: size up      · S ⌘ ↓: size down    · S ⌘ ←: size left  · S ⌘ →: size right",
+    \    " .net:        F2: rename       ·    F3: peek def     ·  F4: goto def     ·    F5: impl         ·  F6: usages",
+    \    "              F7: code issues",
+    \    "",
+    \    " tmux:     ⌥ ⌘ ↑: up           · ⌥ ⌘ ↓: down         · ⌥ ⌘ ←: left       · ⌥ ⌘ →: right",
+    \    "           S ⌘ ↑: size up      · S ⌘ ↓: size down    · S ⌘ ←: size left  · S ⌘ →: size right",
     \ ], #{
     \    title: ' Cheatsheet (q to close)',
     \    pos: 'center', 
@@ -60,6 +63,7 @@ if !exists('g:syntax_on') | syntax enable | endif
 scriptencoding utf-8
 
 set encoding=utf-8
+set guifont=SpaceMono\ Nerd\ Font:h11
 set completeopt=menuone,noinsert,noselect,popuphidden
 set completepopup=highlight:Pmenu,border:on
 set wildoptions=pum
@@ -120,6 +124,9 @@ let g:ctrlp_custom_ignore = {
   \ }
 " ignore files in .gitignore
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+let g:ctrlp_extensions = ['smarttabs']
+let g:ctrlp_smarttabs_modify_tabline = 1
+let g:ctrlp_smarttabs_exclude_quickfix = 1
 
 let g:OmniSharp_popup_position = 'peek'
 if has('nvim')
@@ -214,6 +221,14 @@ let g:lightline#ale#indicator_warnings = "\uf071 "
 let g:lightline#ale#indicator_errors = "\uf05e "
 let g:lightline#ale#indicator_ok = "\uf00c "
 
+" quickfix and location windows
+let g:qf_auto_open_quickfix = 1
+let g:qf_auto_open_loclist = 1
+let g:qf_auto_resize = 1
+let g:qf_auto_quit = 1
+let g:qf_save_win_view = 1
+let g:qf_shorten_path = 3
+
 " Shortcuts
 
 let mapleader = "\<tab>"
@@ -222,15 +237,15 @@ let mapleader = "\<tab>"
 cmap w!! w !sudo tee % >/dev/null
 
 " tab navigation
-nmap <silent> <leader><Left> :tabprevious<CR>
-imap <silent> <leader><Left> <Esc>:tabprevious<CR>i
-map <silent> <leader><Left> :tabprevious<CR>
-nmap <silent> <leader><Right> :tabnext<CR>
-imap <silent> <leader><Right> <Esc>:tabnext<CR>i
-map <silent> <leader><Right> :tabnext<CR>
-nmap <silent> <leader>t :tabnew<CR>
-imap <silent> <leader>t <Esc>:tabnew<CR>
-map <silent> <leader>t <Esc>:tabnew<CR>
+nnoremap <silent> <leader><Left> :tabprevious<CR>
+inoremap <silent> <leader><Left> <Esc>:tabprevious<CR>i
+noremap <silent> <leader><Left> :tabprevious<CR>
+noremap <silent> <leader><Right> :tabnext<CR>
+inoremap <silent> <leader><Right> <Esc>:tabnext<CR>i
+noremap <silent> <leader><Right> :tabnext<CR>
+nnoremap <silent> <leader>t :tabnew<CR>
+inoremap <silent> <leader>t <Esc>:tabnew<CR>
+noremap <silent> <leader>t <Esc>:tabnew<CR>
 nmap <silent> <leader>w :q<CR>
 imap <silent> <leader>w <Esc>:q<CR>
 map <silent> <leader>w :q<CR>
@@ -240,6 +255,10 @@ map <silent> <leader>s :w<CR>
 nmap <silent> <leader>o :CtrlP<CR>
 imap <silent> <leader>o <Esc>:CtrlP<CR>
 map <silent> <leader>o :CtrlP<CR>
+nmap <silent> <leader>p :CtrlPSmartTabs<CR>
+imap <silent> <leader>p <Esc>:CtrlPSmartTabs<CR>
+map <silent> <leader>p :CtrlPSmartTabs<CR>
+noremap <silent> <C-o> :CtrlPSmartTabs<CR>
 nmap <silent> <leader>x :qa<CR>
 imap <silent> <leader>x <Esc>:qa<CR>
 map <silent> <leader>x :qa<CR>
@@ -256,18 +275,18 @@ nnoremap <silent> <leader>e :NERDTreeToggle<CR>
 nnoremap <silent> <leader>f :NERDTreeFind<CR>
 
 " OmniSharp shortcuts
-nmap <silent> <F2> :OmniSharpRename<CR>
-imap <silent> <F2> <Esc>:OmniSharpRename<CR>
-nmap <silent> <F3> :OmniSharpPreviewDefinition<CR>
-imap <silent> <F3> <Esc>:OmniSharpPreviewDefinition<CR>
-nmap <silent> <F4> :OmniSharpGotoDefinition tabedit<CR>
-imap <silent> <F4> <Esc>:OmniSharpGotoDefinition tabedit<CR>
-nmap <silent> <F5> :OmniSharpFindImplementations<CR>
-imap <silent> <F5> <Esc>:OmniSharpFindImplementations<CR>
-nmap <silent> <F6> :OmniSharpFindUsages<CR>
-imap <silent> <F6> <Esc>:OmniSharpFindUsages<CR>
-nmap <silent> <F7> :OmniSharpGlobalCodeCheck<CR>
-imap <silent> <F7> <Esc>:OmniSharpGlobalCodeCheck<CR>
+nnoremap <silent> <F2> :OmniSharpRename<CR>
+inoremap <silent> <F2> <Esc>:OmniSharpRename<CR>
+nnoremap <silent> <F3> :OmniSharpPreviewDefinition<CR>
+inoremap <silent> <F3> <Esc>:OmniSharpPreviewDefinition<CR>
+nnoremap <silent> <F4> :OmniSharpGotoDefinition tabedit<CR>
+inoremap <silent> <F4> <Esc>:OmniSharpGotoDefinition tabedit<CR>
+nnoremap <silent> <F5> :OmniSharpFindImplementations<CR>
+inoremap <silent> <F5> <Esc>:OmniSharpFindImplementations<CR>
+nnoremap <silent> <F6> :OmniSharpFindUsages<CR>
+inoremap <silent> <F6> <Esc>:OmniSharpFindUsages<CR>
+nnoremap <silent> <F7> :OmniSharpGlobalCodeCheck<CR>
+inoremap <silent> <F7> <Esc>:OmniSharpGlobalCodeCheck<CR>
 
 " navigation
 nmap <silent> <C-b> b
@@ -294,12 +313,3 @@ imap <silent> <S-Right> <Esc>v<Right>
 " clipboard support
 vnoremap <silent> <C-c> :w !pbcopy<CR><CR>
 noremap <silent> <C-v> :r !pbpaste<CR><CR>
-
-" quickfix and location windows
-let g:qf_auto_open_quickfix = 1
-let g:qf_auto_open_loclist = 1
-let g:qf_auto_resize = 1
-let g:qf_auto_quit = 1
-let g:qf_save_win_view = 1
-let g:qf_shorten_path = 3
-
