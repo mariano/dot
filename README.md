@@ -38,5 +38,5 @@ Use the [.tmux.conf](.tmux.conf) configuration file. Main shortcuts:
 If it's your first time using the [.vimrc](.vimrc) file make sure to run `PlugInstall`
 on your vim command line.
 
-![image](https://user-images.githubusercontent.com/18598/223804169-de1f44cf-b706-4461-8f1e-1f477c051fc3.png)
-*tmux and vim, with vim showing omnisharp's peek definition (F5) on a vim tab (one of many), while also showing the file explorer (nerdtree) and the cheatsheet (F1)*
+![image](https://github.com/mariano/dot/assets/18598/6b8ffdbe-8d23-4a61-813c-ff6d43befef6)
+*vim on a vim tab (one of many), while also showing the file explorer (nerdtree), highlighted lines, splits and the cheatsheet (F1)*
