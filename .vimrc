@@ -1,22 +1,22 @@
 call plug#begin('~/.vim/plugged')
 
-Plug 'gruvbox-community/gruvbox' 	" Colorscheme
-Plug 'ctrlpvim/ctrlp.vim'        	" Fuzzy filename search
-Plug 'DavidEGx/ctrlp-smarttabs'		" Add tabs to ctrl-p
-Plug 'OmniSharp/omnisharp-vim'   	" c# static analysis
-Plug 'dense-analysis/ale'		" syntax checking and semantic errors
-Plug 'scrooloose/nerdtree'	 	" file system explorer
-Plug 'ryanoasis/vim-devicons'		" file icons in nerdtree
-Plug 'tpope/vim-surround'	 	" surroundings (parenthesis, brackets, quotes, ...)
-Plug 'nathanaelkane/vim-indent-guides'	" visual indent levels
-Plug 'editorconfig/editorconfig-vim'	" .editorconfig support
+Plug 'gruvbox-community/gruvbox'        " Colorscheme
+Plug 'ctrlpvim/ctrlp.vim'               " Fuzzy filename search
+Plug 'DavidEGx/ctrlp-smarttabs'         " Add tabs to ctrl-p
+Plug 'OmniSharp/omnisharp-vim'          " c# static analysis
+Plug 'dense-analysis/ale'               " syntax checking and semantic errors
+Plug 'scrooloose/nerdtree'              " file system explorer
+Plug 'ryanoasis/vim-devicons'           " file icons in nerdtree
+Plug 'tpope/vim-surround'               " surroundings (parenthesis, brackets, quotes, ...)
+Plug 'nathanaelkane/vim-indent-guides'  " visual indent levels
+Plug 'editorconfig/editorconfig-vim'    " .editorconfig support
 Plug 'prabirshrestha/asyncomplete.vim'  " autocomplete
-Plug 'itchyny/lightline.vim'		" status bar
-Plug 'shinchu/lightline-gruvbox.vim'	" status bar theme
-Plug 'maximbaz/lightline-ale'		" status bar syntax checking
-Plug 'nickspoons/vim-sharpenup'		" mappings, code-actions available flag and statusline integration
-Plug 'tpope/vim-obsession'		" sessions
-Plug 'romainl/vim-qf'			" quickfix fixes
+Plug 'itchyny/lightline.vim'            " status bar
+Plug 'shinchu/lightline-gruvbox.vim'    " status bar theme
+Plug 'maximbaz/lightline-ale'           " status bar syntax checking
+Plug 'nickspoons/vim-sharpenup'         " mappings, code-actions available flag and statusline integration
+Plug 'tpope/vim-obsession'              " sessions
+Plug 'romainl/vim-qf'                   " quickfix fixes
 
 call plug#end()
 
@@ -33,7 +33,11 @@ endfunction
 function Cheatsheet()
     call popup_create([
     \    " buffer:     ⇥ o: open         ·   ⇥ p: open tab     . ⇥ e: tree toggle  ·   ⇥ f: open tree    . ⇥ x: exit", 
-    \    "             ⇥ t: new tab      ·   ⇥ ←: left tab     . ⇥ →: right tab    .   ⇥ s: save         . ⇥ w: close",
+    \    "             ⇥ t: new tab      ·   ⇥ 1: left tab     . ⇥ 2: right tab    .   ⇥ s: save         . ⇥ w: close",
+    \    "",
+    \    " split:      ⇥ =: split horiz  · ⇥ |: split vertic",
+    \    "             ⇥ ←: left split   . ⇥ →: right split    . ⇥ ↑: up split     .   ⇥ ↓: split down",
+    \    "             ⇥ j: split size ← . ⇥ l: split size →   . ⇥ i: split size ↑ .   ⇥ m: split size ↓",
     \    "",
     \    " navigate:   C-u: page up      .   C-d: page down    ·   H: top          ·     M: middle       ·   L: bottom",
     \    "               B: full word ←  ·     W: full word →  ·   b: word ←       ·     w: word →",
@@ -60,9 +64,9 @@ endfunction
 " General settings
 filetype indent plugin on
 if !exists('g:syntax_on') | syntax enable | endif
-scriptencoding utf-8
 
 set encoding=utf-8
+scriptencoding utf-8
 set guifont=SpaceMono\ Nerd\ Font:h11
 set completeopt=menuone,noinsert,noselect,popuphidden
 set completepopup=highlight:Pmenu,border:on
@@ -94,6 +98,8 @@ set paste
 set showmatch " Show matching brackets/braces/parantheses
 set wildmode=longest,list,full " Let TAB completion behave like bash's
 set showtabline=2 " Always show tab line
+set list
+set listchars=tab:⇥.,trail:-,nbsp:·,extends:>,precedes:<
 
 " Use truecolor in the terminal, when it is supported
 if has('termguicolors') | set termguicolors | endif
@@ -237,12 +243,8 @@ let mapleader = "\<tab>"
 cmap w!! w !sudo tee % >/dev/null
 
 " tab navigation
-nnoremap <silent> <leader><Left> :tabprevious<CR>
-inoremap <silent> <leader><Left> <Esc>:tabprevious<CR>i
-noremap <silent> <leader><Left> :tabprevious<CR>
-noremap <silent> <leader><Right> :tabnext<CR>
-inoremap <silent> <leader><Right> <Esc>:tabnext<CR>i
-noremap <silent> <leader><Right> :tabnext<CR>
+nnoremap <silent> <leader>1 :tabprevious<CR>
+noremap <silent> <leader>2 :tabnext<CR>
 nnoremap <silent> <leader>t :tabnew<CR>
 inoremap <silent> <leader>t <Esc>:tabnew<CR>
 noremap <silent> <leader>t <Esc>:tabnew<CR>
@@ -262,6 +264,18 @@ noremap <silent> <C-o> :CtrlPSmartTabs<CR>
 nmap <silent> <leader>x :qa<CR>
 imap <silent> <leader>x <Esc>:qa<CR>
 map <silent> <leader>x :qa<CR>
+
+" Split navigation
+nnoremap <silent> <leader>= :split<CR>
+nnoremap <silent> <leader>\ :vsplit<CR>
+nnoremap <silent> <leader><Up> <C-W>k
+nnoremap <silent> <leader><Down> <C-W>j
+nnoremap <silent> <leader><Left> <C-W>h
+nnoremap <silent> <leader><Right> <C-W>l
+nnoremap <silent> <leader>j <C-W><
+nnoremap <silent> <leader>l <C-W>>
+nnoremap <silent> <leader>i <C-W>-
+nnoremap <silent> <leader>m <C-W>+
 
 " More navigation
 nnoremap <silent> <F1> :call Cheatsheet()<CR>
