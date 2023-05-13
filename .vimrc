@@ -44,6 +44,8 @@ function Cheatsheet()
     \    "               0: start        ·     ^: first        ·   $: end          ·    gg: fof          ·   G: eof",
     \    "              F8: quickfix     ·    F9: locations    ·   F10: buffers    ·   F12: clean search",
     \    "",
+    \    " highlight:  ⇥ h: highl line   ·   ⇥ c: clear highl",
+    \    "",
     \    " .net:        F2: rename       ·    F3: peek def     ·  F4: goto def     ·    F5: impl         ·  F6: usages",
     \    "              F7: code issues",
     \    "",
@@ -117,6 +119,8 @@ augroup ColorschemePreferences
   autocmd ColorScheme * highlight link ALEWarningSign ModeMsg
   autocmd ColorScheme * highlight link ALEInfoSign    Identifier
 augroup END
+
+highlight LineHighlight ctermbg=darkgray guibg=darkgray
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
@@ -276,6 +280,10 @@ nnoremap <silent> <leader>j <C-W><
 nnoremap <silent> <leader>l <C-W>>
 nnoremap <silent> <leader>i <C-W>-
 nnoremap <silent> <leader>m <C-W>+
+
+" Line highlight
+nnoremap <silent> <Leader>h :call matchadd('LineHighlight', '\%'.line('.').'l')<CR>
+nnoremap <silent> <Leader>c :call clearmatches()<CR>
 
 " More navigation
 nnoremap <silent> <F1> :call Cheatsheet()<CR>
