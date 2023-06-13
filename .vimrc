@@ -17,6 +17,7 @@ Plug 'maximbaz/lightline-ale'           " status bar syntax checking
 Plug 'nickspoons/vim-sharpenup'         " mappings, code-actions available flag and statusline integration
 Plug 'tpope/vim-obsession'              " sessions
 Plug 'romainl/vim-qf'                   " quickfix fixes
+Plug 'szw/vim-maximizer'     " split maximizing toggle
 
 call plug#end()
 
@@ -33,11 +34,11 @@ endfunction
 function Cheatsheet()
     call popup_create([
     \    " buffer:     ⇥ o: open         ·   ⇥ p: open tab     . ⇥ e: tree toggle  ·   ⇥ f: open tree    . ⇥ x: exit", 
-    \    "             ⇥ t: new tab      ·   ⇥ 1: left tab     . ⇥ 2: right tab    .   ⇥ s: save         . ⇥ w: close",
+    \    "             ⇥ t: new tab      ·   ⇥ 1: tab left     . ⇥ 2: tab right    .   ⇥ s: save         . ⇥ w: close",
     \    "",
-    \    " split:      ⇥ =: split horiz  · ⇥ |: split vertic",
-    \    "             ⇥ ←: left split   . ⇥ →: right split    . ⇥ ↑: up split     .   ⇥ ↓: split down",
-    \    "             ⇥ j: split size ← . ⇥ l: split size →   . ⇥ i: split size ↑ .   ⇥ m: split size ↓",
+    \    " split:      ⇥ =: split horiz  · ⇥ |: split vertic   . ⇥ z: split zoom",
+    \    "             ⇥ ←: split left   . ⇥ →: split right    . ⇥ ↑: split up     .   ⇥ ↓: split down",
+    \    "             ⇥ j: split size ← . ⇥ l: split size →   . ⇥ i: split size ↑ .   ⇥ k: split size ↓",
     \    "",
     \    " navigate:   C-u: page up      .   C-d: page down    ·   H: top          ·     M: middle       ·   L: bottom",
     \    "               B: full word ←  ·     W: full word →  ·   b: word ←       ·     w: word →",
@@ -69,7 +70,7 @@ if !exists('g:syntax_on') | syntax enable | endif
 
 set encoding=utf-8
 scriptencoding utf-8
-set guifont=SpaceMono\ Nerd\ Font:h11
+set guifont=IntelOne\ Mono:h11
 set completeopt=menuone,noinsert,noselect,popuphidden
 set completepopup=highlight:Pmenu,border:on
 set wildoptions=pum
@@ -276,10 +277,11 @@ nnoremap <silent> <leader><Up> <C-W>k
 nnoremap <silent> <leader><Down> <C-W>j
 nnoremap <silent> <leader><Left> <C-W>h
 nnoremap <silent> <leader><Right> <C-W>l
-nnoremap <silent> <leader>j <C-W><
-nnoremap <silent> <leader>l <C-W>>
-nnoremap <silent> <leader>i <C-W>-
-nnoremap <silent> <leader>m <C-W>+
+nnoremap <silent> <leader>z :MaximizerToggle<CR>
+nnoremap <silent> <leader>l <C-W><
+nnoremap <silent> <leader>j <C-W>>
+nnoremap <silent> <leader>k <C-W>-
+nnoremap <silent> <leader>i <C-W>+
 
 " Line highlight
 nnoremap <silent> <Leader>h :call matchadd('LineHighlight', '\%'.line('.').'l')<CR>
