@@ -17,7 +17,8 @@ Plug 'maximbaz/lightline-ale'           " status bar syntax checking
 Plug 'nickspoons/vim-sharpenup'         " mappings, code-actions available flag and statusline integration
 Plug 'tpope/vim-obsession'              " sessions
 Plug 'romainl/vim-qf'                   " quickfix fixes
-Plug 'szw/vim-maximizer'     " split maximizing toggle
+Plug 'szw/vim-maximizer'                " split maximizing toggle
+Plug 'tpope/vim-abolish'                " camelCase to snake_case
 
 call plug#end()
 
@@ -97,12 +98,22 @@ set signcolumn=yes
 set mouse=a
 set updatetime=1000
 set wildignore+=*/tmp/*,*/obj/*,*.so,*.swp,*.zip
-set paste
 set showmatch " Show matching brackets/braces/parantheses
 set wildmode=longest,list,full " Let TAB completion behave like bash's
 set showtabline=2 " Always show tab line
 set list
 set listchars=tab:⇥.,trail:-,nbsp:·,extends:>,precedes:<
+set colorcolumn=80 " Old school
+set re=0 " new regular expression engine
+set expandtab
+set shiftwidth=4
+set tabstop=4
+set softtabstop=-1
+set lazyredraw
+set ttyfast
+set splitkeep=screen
+set undofile
+set undodir=~/.vim/undo
 
 " Use truecolor in the terminal, when it is supported
 if has('termguicolors') | set termguicolors | endif
@@ -255,20 +266,20 @@ inoremap <silent> <leader>t <Esc>:tabnew<CR>
 noremap <silent> <leader>t <Esc>:tabnew<CR>
 nmap <silent> <leader>w :q<CR>
 imap <silent> <leader>w <Esc>:q<CR>
-map <silent> <leader>w :q<CR>
+nnoremap <silent> <leader>w :q<CR>
 nmap <silent> <leader>s :w<CR>
 imap <silent> <leader>s <Esc>:w<CR>
-map <silent> <leader>s :w<CR>
+nnoremap <silent> <leader>s :w<CR>
 nmap <silent> <leader>o :CtrlP<CR>
 imap <silent> <leader>o <Esc>:CtrlP<CR>
-map <silent> <leader>o :CtrlP<CR>
+nnoremap <silent> <leader>o :CtrlP<CR>
 nmap <silent> <leader>p :CtrlPSmartTabs<CR>
 imap <silent> <leader>p <Esc>:CtrlPSmartTabs<CR>
-map <silent> <leader>p :CtrlPSmartTabs<CR>
+nnoremap <silent> <leader>p :CtrlPSmartTabs<CR>
 noremap <silent> <C-o> :CtrlPSmartTabs<CR>
 nmap <silent> <leader>x :qa<CR>
 imap <silent> <leader>x <Esc>:qa<CR>
-map <silent> <leader>x :qa<CR>
+nnoremap <silent> <leader>x :qa<CR>
 
 " Split navigation
 nnoremap <silent> <leader>= :split<CR>
@@ -335,5 +346,8 @@ imap <silent> <S-Left> <Esc>v<Left>
 imap <silent> <S-Right> <Esc>v<Right>
 
 " clipboard support
-vnoremap <silent> <C-c> :w !pbcopy<CR><CR>
-noremap <silent> <C-v> :r !pbpaste<CR><CR>
+" set clipboard+=unnamedplus
+set clipboard^=unnamed
+xnoremap <silent> <C-c> "+y
+nnoremap <silent> <C-v> "+P
+inoremap <silent> <C-v> <C-r>+
